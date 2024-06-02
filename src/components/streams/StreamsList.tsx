@@ -1,43 +1,35 @@
-import { useState, useEffect } from 'react'
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet'
-import {
-  Stream,
-  StreamDirection,
-  StreamType,
-  StreamflowSolana
-} from '@streamflow/stream'
-import { Grid, Typography } from '@mui/material'
-import StreamsTable from './StreamsTable'
+import { useState, useEffect } from 'react';
+import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
+import { Stream, StreamDirection, StreamType } from '@streamflow/stream';
+import { Grid, Typography } from '@mui/material';
+import StreamsTable from './StreamsTable';
+import { solanaDevnetClient } from '../../utils/utils';
 
 const StreamsList = () => {
-  const { wallet } = useAutoConnectWallet()
-  const [streams, setStreams] = useState<[string, Stream][]>([])
-  const [loading, setLoading] = useState(false)
-
-  const client = new StreamflowSolana.SolanaStreamClient(
-    'https://api.devnet.solana.com'
-  )
+  const { wallet } = useAutoConnectWallet();
+  const [streams, setStreams] = useState<[string, Stream][]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         const data = {
           address: wallet.publicKey,
           type: StreamType.All,
           direction: StreamDirection.All
-        }
-        const result: [string, Stream][] = await client.get(data)
-        setStreams(result)
+        };
+        const result: [string, Stream][] = await solanaDevnetClient.get(data);
+        setStreams(result);
       } catch (error) {
-        console.error('Failed to fetch streams:', error)
+        console.error('Failed to fetch streams:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [wallet])
+    fetchData();
+  }, [wallet]);
 
   return (
     <Grid container>
@@ -47,7 +39,7 @@ const StreamsList = () => {
         <StreamsTable streams={streams} />
       )}
     </Grid>
-  )
-}
+  );
+};
 
-export default StreamsList
+export default StreamsList;

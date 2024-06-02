@@ -1,5 +1,5 @@
-import { FC, useState } from 'react'
-import { ICreateStreamData, StreamflowSolana, getBN } from '@streamflow/stream'
+import { FC, useState } from 'react';
+import { ICreateStreamData } from '@streamflow/stream';
 import {
   Button,
   FormControl,
@@ -8,40 +8,33 @@ import {
   Select,
   TextField,
   styled
-} from '@mui/material'
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet'
-import { gt } from 'lodash'
-
-export const solToLamports = (sol: number) => {
-  return getBN(sol, 9) // Convert SOL to lamports
-}
+} from '@mui/material';
+import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
+import { isPositive, solToLamports } from '../../utils/mathUtils';
+import { solanaDevnetClient } from '../../utils/utils';
 
 const CreateStream: FC = () => {
-  const { wallet, tokens, solBalance } = useAutoConnectWallet()
-  const [name, setName] = useState('')
-  const [recipient, setRecipient] = useState('')
-  const [amount, setAmount] = useState<number | string>(0)
-  const [loading, setLoading] = useState(false)
-  const [selectedToken, setSelectedToken] = useState('')
+  const { wallet, tokens, solBalance } = useAutoConnectWallet();
+  const [name, setName] = useState('');
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState<number | string>(0);
+  const [loading, setLoading] = useState(false);
+  const [selectedToken, setSelectedToken] = useState('');
 
   const createStream = async () => {
     if (!wallet) {
-      console.error('Wallet is not connected.')
-      return
+      console.error('Wallet is not connected.');
+      return;
     }
 
     if (!recipient || !selectedToken || !amount) {
-      console.error('All fields are required.')
-      return
+      console.error('All fields are required.');
+      return;
     }
 
-    const client = new StreamflowSolana.SolanaStreamClient(
-      'https://api.devnet.solana.com'
-    )
-
-    const currentTimestamp = Math.floor(Date.now() / 1000)
-    const startTimestamp = currentTimestamp + 360 // Start time 30 minutes from now
-    const cliffTimestamp = startTimestamp + 360 // Cliff time 30 minutes after start time
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const startTimestamp = currentTimestamp + 360; // Start time 6 minutes from now
+    const cliffTimestamp = startTimestamp + 360; // Cliff time 6 minutes after start time
 
     const createStreamParams: ICreateStreamData = {
       recipient: recipient,
@@ -50,9 +43,9 @@ const CreateStream: FC = () => {
           ? 'So11111111111111111111111111111111111111112'
           : selectedToken,
       start: startTimestamp,
-      amount: gt(amount, 0) && solToLamports(amount as number), // Total amount in lamports
-      period: 360, // Release rate every 30 minutes
-      cliff: cliffTimestamp, // Cliff set to 30 minutes
+      amount: isPositive(amount) && solToLamports(amount as number), // Total amount in lamports
+      period: 360, // Release rate every 6 minutes
+      cliff: cliffTimestamp, // Cliff set to 6 minutes
       cliffAmount: solToLamports(1), // 1 SOL in lamports for the cliff
       amountPerPeriod: solToLamports(1), // 1 SOL every period
       name: name,
@@ -62,29 +55,29 @@ const CreateStream: FC = () => {
       transferableBySender: true,
       transferableByRecipient: false,
       automaticWithdrawal: true,
-      withdrawalFrequency: 360 // Automatic withdrawal every 30 minutes
-    }
+      withdrawalFrequency: 360 // Automatic withdrawal every 6 minutes
+    };
 
     const solanaParams = {
       sender: wallet,
       isNative: selectedToken === 'SOL'
-    }
+    };
 
     try {
-      const { ixs, txId } = await client.create(
+      const { ixs, txId } = await solanaDevnetClient.create(
         createStreamParams,
         solanaParams
-      )
-      console.log('Stream created successfully:', txId)
-      console.log('Transaction instructions:', ixs)
+      );
+      console.log('Stream created successfully:', txId);
+      console.log('Transaction instructions:', ixs);
 
-      setLoading(true)
+      setLoading(true);
     } catch (exception) {
-      console.error('Failed to create stream:', exception)
+      console.error('Failed to create stream:', exception);
     } finally {
-      setLoading(false) // Ensure loading is set to false irrespective of outcome
+      setLoading(false); // Ensure loading is set to false irrespective of outcome
     }
-  }
+  };
 
   return (
     <Grid display="flex" flexDirection="column" gap="10px" maxWidth="800px">
@@ -133,13 +126,13 @@ const CreateStream: FC = () => {
       <Button
         variant="contained"
         onClick={createStream}
-        disabled={loading || !gt(amount, 0)}
+        disabled={loading || !isPositive(amount)}
       >
         {loading ? 'Creating Stream...' : 'Create Stream'}
       </Button>
     </Grid>
-  )
-}
+  );
+};
 
 const Label = styled('label')({
   fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
@@ -148,9 +141,6 @@ const Label = styled('label')({
   marginBottom: '4px',
   fontWeight: '400',
   color: 'grey'
-})
+});
 
-export default CreateStream
-
-// account 1: GjcPk2FxL8wdLJSVuGww7xo5caLuPbNdAa427rcje74j
-// account 2: DRto9MKttX1TNvhiSSWuvSqkJZRQMdNwH9p5XySAjtAv
+export default CreateStream;

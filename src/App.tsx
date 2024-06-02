@@ -1,13 +1,13 @@
-import CreateStream from './components/streams/CreateStream'
+import CreateStream from './components/streams/CreateStream';
 
-import { Buffer } from 'buffer'
-import { Grid } from '@mui/material'
-import { AutoConnectWalletProvider } from './contexts/AutoConnectWallet'
-import ConnectedWalletStatus from './components/wallet/ConnectedWalletStatus'
-import StreamsList from './components/streams/StreamsList'
-import WithdrawFromStream from './components/streams/WithdrawFromStream'
+import { Buffer } from 'buffer';
+import { Grid } from '@mui/material';
+import { AutoConnectWalletProvider } from './contexts/AutoConnectWallet';
+import ConnectedWalletStatus from './components/wallet/ConnectedWalletStatus';
+import StreamsList from './components/streams/StreamsList';
+import WithdrawFromStream from './components/streams/WithdrawFromStream';
 
-window.Buffer = Buffer
+window.Buffer = Buffer;
 
 function App() {
   return (
@@ -30,6 +30,6 @@ function App() {
         <WithdrawFromStream />
       </Grid>
     </AutoConnectWalletProvider>
-  )
+  );
 }
-export default App
+export default App;

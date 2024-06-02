@@ -1,9 +1,8 @@
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet'
-import { useWallet } from '../../contexts/ConnectWallet' // Adjust the import path as necessary
-import { Grid, Typography } from '@mui/material'
+import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
+import { Grid, Typography } from '@mui/material';
 
 const ConnectedWalletStatus = () => {
-  const { wallet } = useAutoConnectWallet()
+  const { wallet } = useAutoConnectWallet();
 
   return (
     <Grid>
@@ -13,7 +12,7 @@ const ConnectedWalletStatus = () => {
         <Typography>Please connect your wallet</Typography>
       )}
     </Grid>
-  )
-}
+  );
+};
 
-export default ConnectedWalletStatus
+export default ConnectedWalletStatus;
