@@ -3,7 +3,8 @@ import React, {
   useContext,
   useState,
   useEffect,
-  ReactNode
+  ReactNode,
+  FC
 } from 'react';
 import {
   Connection,
@@ -11,6 +12,7 @@ import {
   PublicKey
 } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { extractWalletPublicKey } from '../../utils/utils';
 
 interface TokenInfo {
   mint: string;
@@ -28,9 +30,7 @@ interface ConnectWalletType {
 
 const ConnectWallet = createContext<ConnectWalletType | undefined>(undefined);
 
-export const WalletProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
+export const WalletProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [wallet, setWallet] = useState<any | null>(null);
   const [walletPublicKey, setWalletPublicKey] = useState<string | null>(null);
   const [tokens, setTokens] = useState<TokenInfo[]>([]);
@@ -44,7 +44,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({
         setWallet(response);
 
         if (response && response.publicKey) {
-          const publicKey = response.publicKey.toBase58();
+          const publicKey = extractWalletPublicKey(response);
           setWalletPublicKey(publicKey);
           console.log(`Wallet connected: ${publicKey}`);
           fetchTokens(publicKey);

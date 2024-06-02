@@ -13,18 +13,19 @@ import {
   useEffect,
   useState
 } from 'react';
+import { extractWalletPublicKey } from '../../utils/utils';
 
-interface TokenInfo {
+type TokenInfo = {
   mint: string;
   amount: number;
-}
+};
 
-interface ConnectWalletType {
+type ConnectWalletType = {
   wallet: any | null;
   walletPublicKey: string | null;
   tokens: TokenInfo[];
   solBalance: number | null;
-}
+};
 
 const AutoConnectWallet = createContext<ConnectWalletType | undefined>(
   undefined
@@ -47,7 +48,7 @@ export const AutoConnectWalletProvider: FC<{ children: ReactNode }> = ({
             await provider.connect();
             setWallet(provider);
 
-            setWalletPublicKey(provider.publicKey.toBase58());
+            setWalletPublicKey(extractWalletPublicKey(provider));
 
             walletPublicKey && fetchTokens(walletPublicKey);
             walletPublicKey && fetchSolBalance(walletPublicKey);

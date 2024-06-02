@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import {
-  Table,
+  Table as MUITable,
   TableBody,
   TableCell,
   TableContainer,
@@ -12,13 +12,13 @@ import { Stream } from '@streamflow/stream';
 import { BN } from '@streamflow/stream/solana';
 import { lamportsToSol } from '../../utils/mathUtils';
 
-type StreamsTableProps = {
+type TableProps = {
   streams: [string, Stream][];
 };
 
-const StreamsTable: FC<StreamsTableProps> = ({ streams }) => (
+const Table: FC<TableProps> = ({ streams }) => (
   <TableContainer component={Paper} style={{ overflowX: 'auto' }}>
-    <Table sx={{ minWidth: 650 }} aria-label="streams table">
+    <MUITable sx={{ minWidth: 650 }} aria-label="streams table">
       <TableHead>
         <TableRow>
           <TableCell>Stream ID</TableCell>
@@ -74,8 +74,8 @@ const StreamsTable: FC<StreamsTableProps> = ({ streams }) => (
           </TableRow>
         ))}
       </TableBody>
-    </Table>
+    </MUITable>
   </TableContainer>
 );
 
-export default StreamsTable;
+export default Table;

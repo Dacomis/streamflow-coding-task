@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import { Buffer } from 'buffer';
 window.Buffer = Buffer;
 

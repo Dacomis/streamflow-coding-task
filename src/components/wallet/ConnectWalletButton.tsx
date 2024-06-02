@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import { useWallet } from '../../contexts/ConnectWallet'; // Adjust the import path as necessary
+import { useWallet } from '../contexts/ConnectWallet'; // Adjust the import path as necessary
 import { Grid } from '@mui/material';
 
 const ConnectWalletButton = () => {

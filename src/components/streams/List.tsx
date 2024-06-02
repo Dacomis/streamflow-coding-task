@@ -1,22 +1,26 @@
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
 import { Grid, Typography } from '@mui/material';
-import StreamsTable from './StreamsTable';
+import Table from './Table';
 import { useStreamsList } from '../hooks/useStreamsList';
 
-const StreamsList = () => {
+const List = () => {
   const { streams, loading, error } = useStreamsList();
 
   error && console.log(error);
 
   return (
-    <Grid container>
+    <Grid container mt="30px">
       {loading ? (
         <Typography>Loading your streams list</Typography>
       ) : (
-        <StreamsTable streams={streams} />
+        <Grid container flexDirection="column">
+          <Typography fontSize="1.5rem" fontWeight="600" mb="20px">
+            User's streams
+          </Typography>
+          <Table streams={streams} />
+        </Grid>
       )}
     </Grid>
   );
 };
 
-export default StreamsList;
+export default List;

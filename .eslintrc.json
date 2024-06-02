@@ -6,5 +6,10 @@
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"]
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "prettier/prettier": "warn",  // Make all prettier issues warnings
+    "@typescript-eslint/no-explicit-any": "warn",  // Make no-explicit-any a warning instead of an error
+    "semi": ["warn", "always"]  // Enforce semicolons but only as warnings
+  }
 }

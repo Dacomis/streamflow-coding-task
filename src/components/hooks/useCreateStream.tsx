@@ -1,6 +1,5 @@
-// hooks/useCreateStream.ts
 import { useState } from 'react';
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
+import { useAutoConnectWallet } from '../contexts/AutoConnectWallet';
 import { solToLamports } from '../../utils/mathUtils';
 import { solanaDevnetClient } from '../../utils/utils';
 

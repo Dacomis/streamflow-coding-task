@@ -1,7 +1,6 @@
-// hooks/useStreams.ts
 import { useState, useEffect } from 'react';
 import { Stream, StreamDirection, StreamType } from '@streamflow/stream';
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
+import { useAutoConnectWallet } from '../contexts/AutoConnectWallet';
 import { solanaDevnetClient } from '../../utils/utils';
 
 type UseStreamsOutput = {

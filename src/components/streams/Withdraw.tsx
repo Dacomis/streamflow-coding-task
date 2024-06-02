@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 import { isPositive } from '../../utils/mathUtils';
 import { useWithdrawFromStream } from '../hooks/useWithdrawFromStream';
 
-const WithdrawFromStream = () => {
-  const [amount, setAmount] = useState<number | string>(0);
-
-  const [streamID, setStreamID] = useState('');
+const Withdraw = () => {
   const { withdraw, loading, error } = useWithdrawFromStream();
+
+  const [amount, setAmount] = useState<number | string>(0);
+  const [streamID, setStreamID] = useState('');
 
   const handleWithdraw = async () => {
     if (isPositive(amount)) {
@@ -18,7 +18,17 @@ const WithdrawFromStream = () => {
   error && console.log(error);
 
   return (
-    <Grid container width="800px" flexDirection="column" gap="20px">
+    <Grid
+      container
+      flexDirection="column"
+      gap="10px"
+      maxWidth="800px"
+      mt="30px"
+    >
+      <Typography fontSize="1.5rem" fontWeight="600" mb="40px">
+        Withdraw a Stream
+      </Typography>
+
       <TextField
         type="text"
         placeholder="Stream ID"
@@ -48,4 +58,4 @@ const WithdrawFromStream = () => {
   );
 };
 
-export default WithdrawFromStream;
+export default Withdraw;

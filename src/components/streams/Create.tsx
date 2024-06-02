@@ -6,15 +6,17 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
   styled
 } from '@mui/material';
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
+import { useAutoConnectWallet } from '../contexts/AutoConnectWallet';
 import { isPositive } from '../../utils/mathUtils';
 import { useCreateStream } from '../hooks/useCreateStream';
 
-const CreateStream: FC = () => {
+const Create: FC = () => {
   const { tokens, solBalance } = useAutoConnectWallet();
   const { createStream, loading, error } = useCreateStream();
+
   const [name, setName] = useState('');
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState<number | string>(0);
@@ -29,7 +31,17 @@ const CreateStream: FC = () => {
   error && console.log(error);
 
   return (
-    <Grid display="flex" flexDirection="column" gap="10px" maxWidth="800px">
+    <Grid
+      container
+      flexDirection="column"
+      gap="10px"
+      maxWidth="800px"
+      mt="30px"
+    >
+      <Typography fontSize="1.5rem" fontWeight="600" mb="20px">
+        Create a Stream
+      </Typography>
+
       <FormControl fullWidth>
         <Label htmlFor="token-select-label">
           Select a token from your wallet
@@ -92,4 +104,4 @@ const Label = styled('label')({
   color: 'grey'
 });
 
-export default CreateStream;
+export default Create;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IWithdrawData } from '@streamflow/stream';
 import { solanaDevnetClient } from '../../utils/utils';
 import { isPositive, solToLamports } from '../../utils/mathUtils';
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
+import { useAutoConnectWallet } from '../contexts/AutoConnectWallet';
 
 type UseWithdrawOutput = {
   withdraw: (streamID: string, amount: number) => Promise<void>;
