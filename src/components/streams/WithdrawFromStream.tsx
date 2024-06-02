@@ -1,54 +1,21 @@
 import { useState } from 'react';
-import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet';
-import { IWithdrawData } from '@streamflow/stream';
 import { Button, Grid, TextField } from '@mui/material';
-import { gt } from 'lodash';
-import { solanaDevnetClient } from '../../utils/utils';
-import { isPositive, solToLamports } from '../../utils/mathUtils';
+import { isPositive } from '../../utils/mathUtils';
+import { useWithdrawFromStream } from '../hooks/useWithdrawFromStream';
 
 const WithdrawFromStream = () => {
-  const { wallet } = useAutoConnectWallet();
   const [amount, setAmount] = useState<number | string>(0);
-  const [loading, setLoading] = useState(false);
 
   const [streamID, setStreamID] = useState('');
+  const { withdraw, loading, error } = useWithdrawFromStream();
 
-  const createStream = async () => {
-    if (!wallet) {
-      console.error('Wallet is not connected.');
-      return;
-    }
-
-    if (!streamID) {
-      console.error('All fields are required.');
-      return;
-    }
-
-    const withdrawStreamParams: IWithdrawData = {
-      id: streamID, // Identifier of a stream to be withdrawn from.
-      amount: isPositive(amount) && solToLamports(amount as number) // Requested amount to withdraw. If stream is completed, the whole amount will be withdrawn.
-    };
-
-    const solanaParams = {
-      invoker: wallet
-    };
-
-    try {
-      const { ixs, txId } = await solanaDevnetClient.withdraw(
-        withdrawStreamParams,
-        solanaParams
-      );
-
-      console.log('Withdrawal created successfully:', txId);
-      console.log('Withdrawal transaction instructions:', ixs);
-
-      setLoading(true);
-    } catch (exception) {
-      console.error('Failed to create withdrawal:', exception);
-    } finally {
-      setLoading(false); // Ensure loading is set to false irrespective of outcome
+  const handleWithdraw = async () => {
+    if (isPositive(amount)) {
+      await withdraw(streamID, Number(amount));
     }
   };
+
+  error && console.log(error);
 
   return (
     <Grid container width="800px" flexDirection="column" gap="20px">
@@ -72,8 +39,8 @@ const WithdrawFromStream = () => {
 
       <Button
         variant="contained"
-        onClick={createStream}
-        disabled={loading || !gt(amount, 0)}
+        onClick={handleWithdraw}
+        disabled={loading || !isPositive(Number(amount))}
       >
         {loading ? 'Withdrawing fom Stream...' : 'Withdraw fom Stream'}
       </Button>
