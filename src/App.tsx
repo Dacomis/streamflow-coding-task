@@ -1,25 +1,35 @@
-import CreateStream from './components/CreateStream';
-import { WalletProvider } from './contexts/ConnectWallet';
+import CreateStream from './components/streams/CreateStream'
 
-import { Buffer } from 'buffer';
-import ConnectWalletButton from './components/wallet/ConnectWalletButton';
-import { Grid } from '@mui/material';
-import ConnectedWalletStatus from './components/wallet/ConnectedWalletStatus';
+import { Buffer } from 'buffer'
+import { Grid } from '@mui/material'
+import { AutoConnectWalletProvider } from './contexts/AutoConnectWallet'
+import ConnectedWalletStatus from './components/wallet/ConnectedWalletStatus'
+import StreamsList from './components/streams/StreamsList'
+import WithdrawFromStream from './components/streams/WithdrawFromStream'
 
-window.Buffer = Buffer;
+window.Buffer = Buffer
 
 function App() {
   return (
-    <WalletProvider>
-      <Grid container flexDirection='column' gap='30px'>
-        <ConnectWalletButton />
+    <AutoConnectWalletProvider>
+      <Grid
+        container
+        flexDirection="column"
+        gap="30px"
+        maxWidth="90%"
+        margin="0 auto"
+      >
+        {/* <ConnectWalletButton /> */}
 
         <ConnectedWalletStatus />
 
         <CreateStream />
-      </Grid>
-    </WalletProvider>
-  );
-}
 
-export default App;
+        <StreamsList />
+
+        <WithdrawFromStream />
+      </Grid>
+    </AutoConnectWalletProvider>
+  )
+}
+export default App

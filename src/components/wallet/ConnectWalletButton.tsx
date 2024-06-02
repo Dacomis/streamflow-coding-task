@@ -1,10 +1,10 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import { useWallet } from '../../contexts/ConnectWallet';  // Adjust the import path as necessary
-import { Grid } from '@mui/material';
+import React from 'react'
+import Button from '@mui/material/Button'
+import { useWallet } from '../../contexts/ConnectWallet' // Adjust the import path as necessary
+import { Grid } from '@mui/material'
 
 const ConnectWalletButton = () => {
-  const { wallet, connectWallet, disconnectWallet } = useWallet();
+  const { wallet, connectWallet, disconnectWallet } = useWallet()
 
   return (
     <Grid>
@@ -18,7 +18,7 @@ const ConnectWalletButton = () => {
         </Button>
       )}
     </Grid>
-  );
-};
+  )
+}
 
-export default ConnectWalletButton;
+export default ConnectWalletButton

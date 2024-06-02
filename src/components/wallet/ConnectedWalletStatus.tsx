@@ -1,18 +1,19 @@
-import { useWallet } from '../../contexts/ConnectWallet';  // Adjust the import path as necessary
-import { Grid, Typography } from '@mui/material';
+import { useAutoConnectWallet } from '../../contexts/AutoConnectWallet'
+import { useWallet } from '../../contexts/ConnectWallet' // Adjust the import path as necessary
+import { Grid, Typography } from '@mui/material'
 
 const ConnectedWalletStatus = () => {
-  const { walletPublicKey } = useWallet();
+  const { wallet } = useAutoConnectWallet()
 
   return (
     <Grid>
-      {walletPublicKey ? (
-        <Typography>{`Wallet connected: ${walletPublicKey}`}</Typography>
+      {wallet ? (
+        <Typography>{`Wallet connected: ${wallet.publicKey.toBase58()}`}</Typography>
       ) : (
         <Typography>Please connect your wallet</Typography>
       )}
     </Grid>
-  );
-};
+  )
+}
 
-export default ConnectedWalletStatus;
+export default ConnectedWalletStatus
